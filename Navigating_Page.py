@@ -142,18 +142,19 @@ def Nav_link(browser):
 
 def clicking_process(browser,main_detail_list) :
 
-    dist_main_detail_list = []
+    dist_main_detail_list = ['https://bzp.uzp.gov.pl/ZP403/Preview/a89aa4cc-83e0-4818-9042-6fbd53d6fe96']
     dist_main_detail_list.extend(x for x in main_detail_list if x not in dist_main_detail_list) # remove Duplicate List From List
     dist_main_detail_list1 = list(dist_main_detail_list)
 
     for deatail_list in dist_main_detail_list1:
-        browser.get(deatail_list[1])
+        # browser.get(deatail_list[1])
+        browser.get(deatail_list)
         time.sleep(2)
-        Url = deatail_list[1]
-        purchaser = deatail_list[3]
-        reference_number = deatail_list[5]
-        Title = deatail_list[4]
-        Tender_id = deatail_list[2]
+        Url = 'deatail_list[1]'
+        purchaser = 'deatail_list[3]'
+        reference_number = 'deatail_list[5]'
+        Title = 'deatail_list[4]'
+        Tender_id = 'deatail_list[2]'
         get_htmlSource = ''
         for Web_page in browser.find_elements_by_xpath('//*[@id="printContentId"]'):
             get_htmlSource = Web_page.get_attribute("outerHTML").replace('href="../', 'href="https://bzp.uzp.gov.pl/').replace("""<input type="button" value="Drukuj" onclick="printElement('printContentId')">""", '')

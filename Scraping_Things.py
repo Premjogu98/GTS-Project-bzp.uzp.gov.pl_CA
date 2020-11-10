@@ -19,6 +19,7 @@ def Scraping_data(get_htmlSource,purchaser,reference_number,Title,Tender_id,Url)
     Decoded_get_htmlSource: str = html.unescape(str(get_htmlSource))
     Decoded_get_htmlSource: str = re.sub('\s+', ' ', str(Decoded_get_htmlSource)).replace("\n","")
     a = True
+    a = True
     while a == True:
         try:
             # ==================================================================================================================
@@ -97,9 +98,10 @@ def Scraping_data(get_htmlSource,purchaser,reference_number,Title,Tender_id,Url)
             SegFields[19] = Title  # short_descp
 
             Short_disc = Decoded_get_htmlSource.partition("Krótki opis przedmiotu zamówienia")[2].partition("</div>")[0]
+            Short_disc = str(Short_disc).encode('ascii', 'replace')
             cleanr = re.compile('<.*?>')
-            Short_disc = re.sub(cleanr, '', Short_disc)
-            Short_disc = string.capwords(str(Short_disc.strip()))
+            Short_disc = re.sub(cleanr, '', str(Short_disc))
+            Short_disc = string.capwords(str(Short_disc.strip().replace('?','')))
             
             Type_of_contract = Decoded_get_htmlSource.partition("Rodzaj zamówienia:</b>")[2].partition("</div>")[0]
             cleanr = re.compile('<.*?>')
@@ -178,7 +180,7 @@ def Scraping_data(get_htmlSource,purchaser,reference_number,Title,Tender_id,Url)
             if len(SegFields[18]) >= 1500:
                 SegFields[18] = str(SegFields[18])[:1500]+'...'
 
-            check_date(get_htmlSource, SegFields)
+            insert_in_Local(get_htmlSource , SegFields)
             a = False
         except Exception as e:
             exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -187,25 +189,25 @@ def Scraping_data(get_htmlSource,purchaser,reference_number,Title,Tender_id,Url)
             global_var.On_Error += 1
             a = True
 
-def check_date(get_htmlSource, SegFields):
-    deadline = str(SegFields[24])
-    curdate = datetime.now()
-    curdate_str = curdate.strftime("%Y-%m-%d")
-    try:
-        if deadline != '':
-            datetime_object_deadline = datetime.strptime(deadline, '%Y-%m-%d')
-            datetime_object_curdate = datetime.strptime(curdate_str, '%Y-%m-%d')
-            timedelta_obj = datetime_object_deadline - datetime_object_curdate
-            day = timedelta_obj.days
-            if day > 0:
-                insert_in_Local(get_htmlSource , SegFields)
-            else:
-                print("Expired Tender")
-                global_var.expired += 1
-        else:
-            print("Deadline Not Given")
-            global_var.deadline_Not_given += 1
-    except Exception as e:
-        exc_type , exc_obj , exc_tb = sys.exc_info()
-        fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
-        print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" , fname , "\n" ,exc_tb.tb_lineno)
+# def check_date(get_htmlSource, SegFields):
+#     deadline = str(SegFields[24])
+#     curdate = datetime.now()
+#     curdate_str = curdate.strftime("%Y-%m-%d")
+#     try:
+#         if deadline != '':
+#             datetime_object_deadline = datetime.strptime(deadline, '%Y-%m-%d')
+#             datetime_object_curdate = datetime.strptime(curdate_str, '%Y-%m-%d')
+#             timedelta_obj = datetime_object_deadline - datetime_object_curdate
+#             day = timedelta_obj.days
+#             if day > 0:
+#                 insert_in_Local(get_htmlSource , SegFields)
+#             else:
+#                 print("Expired Tender")
+#                 global_var.expired += 1
+#         else:
+#             print("Deadline Not Given")
+#             global_var.deadline_Not_given += 1
+#     except Exception as e:
+#         exc_type , exc_obj , exc_tb = sys.exc_info()
+#         fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
+#         print("Error ON : " , sys._getframe().f_code.co_name + "--> " + str(e) , "\n" , exc_type , "\n" , fname , "\n" ,exc_tb.tb_lineno)

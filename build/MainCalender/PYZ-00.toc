@@ -221,9 +221,9 @@
   ('multiprocessing',
    'f:\\python\\lib\\multiprocessing\\__init__.py',
    'PYMODULE'),
-  ('stringprep', 'f:\\python\\lib\\stringprep.py', 'PYMODULE'),
-  ('typing', 'f:\\python\\lib\\typing.py', 'PYMODULE'),
   ('_py_abc', 'f:\\python\\lib\\_py_abc.py', 'PYMODULE'),
+  ('typing', 'f:\\python\\lib\\typing.py', 'PYMODULE'),
+  ('stringprep', 'f:\\python\\lib\\stringprep.py', 'PYMODULE'),
   ('tracemalloc', 'f:\\python\\lib\\tracemalloc.py', 'PYMODULE'),
   ('Navigating_Page',
    'F:\\Office Projects\\A Contract '
